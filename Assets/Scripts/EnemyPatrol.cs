@@ -19,6 +19,6 @@ public class EnemyPatrol : MonoBehaviour
     private void Move()
     {
         transform.Translate(_speed * Time.deltaTime * Vector2.right);
-        _enemyDeadEndChecker.TurnAround();
+        _enemyDeadEndChecker.TryTurnAround();
     }
 }

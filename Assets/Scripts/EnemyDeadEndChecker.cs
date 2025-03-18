@@ -14,12 +14,14 @@ public class EnemyDeadEndChecker : MonoBehaviour
         Gizmos.DrawWireCube(transform.position + _wallAheadCastDistance, _wallAheadSize);
     }
 
-    public void TurnAround()
+    public void TryTurnAround()
     {
-        if (!IsGroundAhead() || IsWallAhead())
+        int rotationAngle = 180;
+
+        if (IsGroundAhead() != true || IsWallAhead())
         {
             _groundAheadCastDistance.x = -_groundAheadCastDistance.x;
-            transform.Rotate(Vector3.up * 180);
+            transform.Rotate(Vector3.up * rotationAngle);
         }
     }
 

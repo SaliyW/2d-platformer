@@ -5,14 +5,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _speed = 10;
     [SerializeField] private float _jumpForce = 1150;
 
-    public bool IsFlying { get; private set; }
-    public bool IsMoving { get; private set; }
-
     private Rigidbody2D _rigidbody;
     private SpriteRenderer _spriteRenderer;
     private PlayerAnimationsController _animationsController;
     private PlayerGroundChecker _groundChecker;
     private InputReader _inputReader;
+
+    public bool IsFlying { get; private set; }
+    public bool IsMoving { get; private set; }
     
     private void Awake()
     {
@@ -45,11 +45,10 @@ public class PlayerController : MonoBehaviour
 
     private void Jump()
     {
-        if (_inputReader.IsSpaceKeyDown() && _groundChecker.IsGrounded())
+        if (_inputReader.IsJumpKeyDown() && _groundChecker.IsGrounded())
         {
             _rigidbody.AddForce(transform.up * _jumpForce);
-
-            _animationsController.Jump();
+            _animationsController.SetJump();
         }
     }
 

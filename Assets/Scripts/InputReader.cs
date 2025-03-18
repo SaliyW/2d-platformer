@@ -13,8 +13,10 @@ public class InputReader : MonoBehaviour
         return input;
     }
 
-    public bool IsSpaceKeyDown()
+    public bool IsJumpKeyDown()
     {
-        return Input.GetKeyDown(KeyCode.Space);
+        KeyCode jump = KeyCode.Space;
+
+        return Input.GetKeyDown(jump);
     }
 }
