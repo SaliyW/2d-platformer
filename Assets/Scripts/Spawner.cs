@@ -17,7 +17,7 @@ public class Spawner : MonoBehaviour
     {
         _pool = new ObjectPool<GameObject>(
         createFunc: () => Instantiate(_prefab),
-        actionOnGet: (obj) => ActionOnGet(obj),
+        actionOnGet: (obj) => ActOnGet(obj),
         actionOnRelease: (obj) => obj.SetActive(false),
         actionOnDestroy: (obj) => Destroy(obj),
         collectionCheck: true,
@@ -38,7 +38,7 @@ public class Spawner : MonoBehaviour
         }
     }
 
-    private void ActionOnGet(GameObject obj)
+    private void ActOnGet(GameObject obj)
     {
         obj.transform.position = _spawnPoints[_currentPointNumber].position;
         _currentPointNumber++;

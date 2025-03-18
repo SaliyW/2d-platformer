@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(EnemyDeadEndChecker))]
 public class EnemyPatrol : MonoBehaviour
 {
     [SerializeField] private float _speed = 5;

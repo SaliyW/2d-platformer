@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+[RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(PlayerMover))]
+[RequireComponent(typeof(PlayerJumper))]
 public class PlayerAnimationsController : MonoBehaviour
 {
     private const string Jump = nameof(Jump);
@@ -9,21 +12,23 @@ public class PlayerAnimationsController : MonoBehaviour
     private int _jumpHash;
     private int _isMovingHash;
     private int _isFlyingHash;
-    private PlayerController _controller;
+    private PlayerMover _mover;
+    private PlayerJumper _jumper;
     private Animator _animator;
 
     private void Awake()
     {
         _animator = GetComponent<Animator>();
-        _controller = GetComponent<PlayerController>();
+        _mover = GetComponent<PlayerMover>();
+        _jumper = GetComponent<PlayerJumper>();
 
         SetupParametersHash();
     }
 
     private void Update()
     {
-        _animator.SetBool(_isMovingHash, _controller.IsMoving);
-        _animator.SetBool(_isFlyingHash, _controller.IsFlying);
+        _animator.SetBool(_isMovingHash, _mover.IsMoving);
+        _animator.SetBool(_isFlyingHash, _jumper.IsFlying);
     }
 
     private void SetupParametersHash()
