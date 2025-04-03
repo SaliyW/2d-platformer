@@ -3,20 +3,23 @@ using UnityEngine;
 
 public class EnemyPlayerDetector : MonoBehaviour
 {
-    public Action<GameObject> PlayerTriggerEntered;
+    public Action<Transform> PlayerTriggerEntered;
     public Action PlayerTriggerExited;
-    public Action<GameObject> PlayerCollisionEntered;
+    public Action<Transform> PlayerCollisionEntered;
 
-    private void OnCollisionEnter2D(Collision2D playerCollision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        PlayerCollisionEntered?.Invoke(playerCollision.gameObject);
+        if (collision.gameObject.GetComponent<PlayerBase>())
+        {
+            PlayerCollisionEntered?.Invoke(collision.transform);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.GetComponent<PlayerBase>())
         {
-            PlayerTriggerEntered?.Invoke(collision.gameObject);
+            PlayerTriggerEntered?.Invoke(collision.transform);
         }
     }
 

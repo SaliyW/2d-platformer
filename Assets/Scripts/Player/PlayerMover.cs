@@ -17,12 +17,7 @@ public class PlayerMover : MonoBehaviour
         _surfaceChecker = GetComponent<PlayerSurfaceChecker>();
     }
 
-    private void Update()
-    {
-        Move();
-    }
-
-    private void Move()
+    public void TryMove()
     {
         float currentSpeed;
         float slowSpeed = 0.5f;

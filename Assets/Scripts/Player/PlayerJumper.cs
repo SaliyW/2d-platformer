@@ -23,19 +23,15 @@ public class PlayerJumper : MonoBehaviour
         _surfaceChecker = GetComponent<PlayerSurfaceChecker>();
     }
 
-    private void Update()
-    {
-        Jump();
-        ControlFlight();
-    }
-
-    private void Jump()
+    public void TryJump()
     {
         if (_inputReader.IsJumpKeyDown() && _surfaceChecker.IsGrounded())
         {
             _rigidbody.AddForce(transform.up * _jumpForce);
             _animationsController.SetJump();
         }
+
+        ControlFlight();
     }
 
     private void ControlFlight()

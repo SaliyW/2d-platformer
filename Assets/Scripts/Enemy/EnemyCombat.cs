@@ -1,49 +1,27 @@
 ﻿using UnityEngine;
 
-[RequireComponent(typeof(EnemyPlayerDetector))] 
 public class EnemyCombat : MonoBehaviour
 {
-    private EnemyPlayerDetector _playerDetector;
-
-    private void Awake()
+    public void TryAttackPlayer(Transform player)
     {
-        _playerDetector = GetComponent<EnemyPlayerDetector>();
-    }
-
-    private void OnEnable()
-    {
-        _playerDetector.PlayerCollisionEntered += TryAttackPlayer;
-    }
-
-    private void OnDisable()
-    {
-        _playerDetector.PlayerCollisionEntered -= TryAttackPlayer;
-    }
-
-    private void TryAttackPlayer(GameObject player)
-    {
-        Rigidbody2D playerRigidbody;
+        Rigidbody2D playerRigidbody = player.GetComponent<Rigidbody2D>();
+        PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
         Vector2 force;
         float xForce = 20;
         float yForce = 20;
 
-        if (player.TryGetComponent(out PlayerHealth playerHealth))
+        if (playerRigidbody.velocity.y >= 0)
         {
-            playerRigidbody = player.GetComponent<Rigidbody2D>();
+            playerHealth.LoseLife();
 
-            if (playerRigidbody.velocity.y >= 0)
+            if (player.position.x < transform.position.x)
             {
-                playerHealth.LoseLife();
-
-                if (player.transform.position.x < transform.position.x)
-                {
-                    xForce = -xForce;
-                }
-
-                force = new(xForce, yForce);
-
-                playerRigidbody.AddForce(force, ForceMode2D.Impulse);
+                xForce = -xForce;
             }
+
+            force = new(xForce, yForce);
+
+            playerRigidbody.AddForce(force, ForceMode2D.Impulse);
         }
     }
 }
