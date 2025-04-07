@@ -2,19 +2,20 @@
 
 [RequireComponent(typeof(PlayerInputReader))]
 [RequireComponent(typeof(PlayerSurfaceChecker))]
+[RequireComponent(typeof(PlayerAnimations))]
 public class PlayerMover : MonoBehaviour
 {
     [SerializeField] private float _speed = 8;
 
     private PlayerInputReader _inputReader;
     private PlayerSurfaceChecker _surfaceChecker;
-
-    public bool IsMoving { get; private set; }
+    private PlayerAnimations _animations;
 
     private void Awake()
     {
         _inputReader = GetComponent<PlayerInputReader>();
         _surfaceChecker = GetComponent<PlayerSurfaceChecker>();
+        _animations = GetComponent<PlayerAnimations>();
     }
 
     public void TryMove()
@@ -34,8 +35,8 @@ public class PlayerMover : MonoBehaviour
         Vector3 input = _inputReader.ReadHorizontalInput();
 
         transform.position += currentSpeed * Time.deltaTime * input;
-        IsMoving = input.x != 0;
 
+        _animations.SetMoving(input.x != 0);
         TryTurnAround(input);
     }
 

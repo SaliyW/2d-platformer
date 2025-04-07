@@ -6,7 +6,7 @@ public class CameraFollower : MonoBehaviour
     [SerializeField] private Vector3 _offset;
     [SerializeField] private float _speed;
 
-    private void Update()
+    private void LateUpdate()
     {
         Move();
     }

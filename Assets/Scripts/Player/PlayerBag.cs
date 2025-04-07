@@ -1,12 +1,25 @@
 ﻿using UnityEngine;
 
-public class PlayerBag : MonoBehaviour
+[RequireComponent(typeof(PlayerHealth))]
+public class PlayerBag : MonoBehaviour, IVisitor
 {
     [SerializeField] private int _gems = 0;
 
-    public void TakeGem(GameObject gem)
+    private PlayerHealth _health;
+
+    private void Awake()
     {
-        Destroy(gem);
+        _health = GetComponent<PlayerHealth>();
+    }
+
+    public void VisitGem(Gem item)
+    {
+        Destroy(item.gameObject);
         _gems++;
+    }
+
+    public void VisitCherry(Cherry item)
+    {
+        _health.Heal(item.gameObject);
     }
 }

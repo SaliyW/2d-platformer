@@ -1,20 +1,20 @@
 ﻿using UnityEngine;
 
-[RequireComponent(typeof(PlayerAnimationsController))]
+[RequireComponent(typeof(PlayerAnimations))]
 public class PlayerHealth : MonoBehaviour
 {
     [SerializeField] private int _lives = 3;
 
-    private PlayerAnimationsController _animationsController;
+    private PlayerAnimations _animations;
 
     private void Awake()
     {
-        _animationsController = GetComponent<PlayerAnimationsController>();
+        _animations = GetComponent<PlayerAnimations>();
     }
 
     public void LoseLife()
     {
-        _animationsController.SetHurt();
+        _animations.SetHurt();
 
         _lives--;
 
@@ -28,7 +28,7 @@ public class PlayerHealth : MonoBehaviour
     {
         int maxLives = 3;
 
-        _animationsController.SetHeal();
+        _animations.SetHeal();
 
         Destroy(cherry);
 

@@ -1,9 +1,7 @@
 ﻿using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
-[RequireComponent(typeof(PlayerMover))]
-[RequireComponent(typeof(PlayerJumper))]
-public class PlayerAnimationsController : MonoBehaviour
+public class PlayerAnimations : MonoBehaviour
 {
     private const string Hurt = nameof(Hurt);
     private const string Heal = nameof(Heal);
@@ -16,23 +14,21 @@ public class PlayerAnimationsController : MonoBehaviour
     private int _jumpHash;
     private int _isMovingHash;
     private int _isFlyingHash;
-    private PlayerMover _mover;
-    private PlayerJumper _jumper;
+    private bool _isMoving;
+    private bool _isFlying;
     private Animator _animator;
 
     private void Awake()
     {
         _animator = GetComponent<Animator>();
-        _mover = GetComponent<PlayerMover>();
-        _jumper = GetComponent<PlayerJumper>();
 
         SetupParametersHash();
     }
 
     private void Update()
     {
-        _animator.SetBool(_isMovingHash, _mover.IsMoving);
-        _animator.SetBool(_isFlyingHash, _jumper.IsFlying);
+        _animator.SetBool(_isMovingHash, _isMoving);
+        _animator.SetBool(_isFlyingHash, _isFlying);
     }
 
     private void SetupParametersHash()
@@ -42,6 +38,16 @@ public class PlayerAnimationsController : MonoBehaviour
         _jumpHash = Animator.StringToHash(Jump);
         _isMovingHash = Animator.StringToHash(IsMoving);
         _isFlyingHash = Animator.StringToHash(IsFlying);
+    }
+
+    public void SetMoving(bool isMoving)
+    {
+        _isMoving = isMoving;
+    }
+
+    public void SetFlying(bool isFlying)
+    {
+        _isFlying = isFlying;
     }
 
     public void SetJump()
