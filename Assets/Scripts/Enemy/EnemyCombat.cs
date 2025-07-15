@@ -12,7 +12,7 @@ public class EnemyCombat : MonoBehaviour
 
         if (playerRigidbody.velocity.y >= 0)
         {
-            playerHealth.LoseLife();
+            playerHealth.LoseHealth();
 
             if (player.position.x < transform.position.x)
             {

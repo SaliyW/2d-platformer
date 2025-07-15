@@ -3,38 +3,48 @@
 [RequireComponent(typeof(PlayerAnimations))]
 public class PlayerHealth : MonoBehaviour
 {
-    [SerializeField] private int _lives = 3;
+    [SerializeField] private int _currentHealth = 3;
+    [SerializeField] private int _maxHealth = 3;
+
+    public int CurrentHealth => _currentHealth;
+    public int MaxHealth => _maxHealth;
 
     private PlayerAnimations _animations;
+    private readonly int _damage = 20; //test value for buttons
 
     private void Awake()
     {
         _animations = GetComponent<PlayerAnimations>();
     }
 
-    public void LoseLife()
+    public void LoseHealth()
     {
         _animations.SetHurt();
 
-        _lives--;
+        //_currentHealth--;
+        _currentHealth -= _damage;
 
-        if (_lives == 0)
+        if (_currentHealth == 0)
         {
             Destroy(gameObject);
         }
     }
 
-    public void Heal(GameObject cherry)
+    public void TakeCherry(GameObject cherry)
     {
-        int maxLives = 3;
-
         _animations.SetHeal();
 
         Destroy(cherry);
 
-        if (_lives < maxLives)
+        Heal();
+    }
+
+    public void Heal()
+    {
+        if (_currentHealth < _maxHealth)
         {
-            _lives++;
+            //_currentHealth++;
+            _currentHealth += _damage;
         }
     }
 }

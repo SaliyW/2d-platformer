@@ -20,6 +20,6 @@ public class PlayerBag : MonoBehaviour, IVisitor
 
     public void VisitCherry(Cherry item)
     {
-        _health.Heal(item.gameObject);
+        _health.TakeCherry(item.gameObject);
     }
 }
