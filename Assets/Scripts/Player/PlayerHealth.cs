@@ -1,50 +1,42 @@
 ﻿using UnityEngine;
 
 [RequireComponent(typeof(PlayerAnimations))]
-public class PlayerHealth : MonoBehaviour
+public class PlayerHealth : Health
 {
-    [SerializeField] private int _currentHealth = 3;
-    [SerializeField] private int _maxHealth = 3;
-
-    public int CurrentHealth => _currentHealth;
-    public int MaxHealth => _maxHealth;
-
     private PlayerAnimations _animations;
-    private readonly int _damage = 20; //test value for buttons
 
     private void Awake()
     {
         _animations = GetComponent<PlayerAnimations>();
     }
 
-    public void LoseHealth()
+    public void TakeDamage(int damage)
     {
         _animations.SetHurt();
 
-        //_currentHealth--;
-        _currentHealth -= _damage;
+        _currentHealth -= damage;
 
-        if (_currentHealth == 0)
+        if (_currentHealth < _minHealth)
         {
-            Destroy(gameObject);
+            _currentHealth = _minHealth;
         }
     }
 
-    public void TakeCherry(GameObject cherry)
+    public void TakeCherry(Cherry cherry)
+    {
+        TakeHeal(cherry.HealValue);
+        Destroy(cherry.gameObject);
+    }
+
+    public void TakeHeal(int heal)
     {
         _animations.SetHeal();
 
-        Destroy(cherry);
+        _currentHealth += heal;
 
-        Heal();
-    }
-
-    public void Heal()
-    {
-        if (_currentHealth < _maxHealth)
+        if (_currentHealth > _maxHealth)
         {
-            //_currentHealth++;
-            _currentHealth += _damage;
+            _currentHealth = _maxHealth;
         }
     }
 }

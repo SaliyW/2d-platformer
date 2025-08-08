@@ -5,6 +5,7 @@
 [RequireComponent(typeof(EnemyChaser))]
 [RequireComponent(typeof(EnemyCombat))]
 [RequireComponent(typeof(EnemyPlayerDetector))]
+[RequireComponent(typeof(EnemyHealth))]
 public class Enemy : MonoBehaviour
 {
     private EnemyPatrol _patrol;

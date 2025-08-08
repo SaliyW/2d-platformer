@@ -9,10 +9,12 @@ public class EnemyCombat : MonoBehaviour
         Vector2 force;
         float xForce = 20;
         float yForce = 20;
+        float minVelocity = -0.01f;
+        int damage = 40;
 
-        if (playerRigidbody.velocity.y >= 0)
+        if (playerRigidbody.velocity.y >= minVelocity)
         {
-            playerHealth.LoseHealth();
+            playerHealth.TakeDamage(damage);
 
             if (player.position.x < transform.position.x)
             {
