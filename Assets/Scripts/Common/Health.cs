@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 
 public abstract class Health : MonoBehaviour
 {
@@ -7,6 +8,8 @@ public abstract class Health : MonoBehaviour
 
     public int CurrentHealth => _currentHealth;
     public int MaxHealth => _maxHealth;
+
+    public Action HealthChanged;
 
     protected const int _minHealth = 0;
 }

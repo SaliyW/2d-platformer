@@ -1,32 +1,43 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class HealthBarSmoothSlider : MonoBehaviour
 {
     [SerializeField] private Slider _sliderDisplay;
+    [SerializeField] private float _delta = 0.2f;
 
     private Health _health;
     private Quaternion _fixedRotation;
+    private Coroutine _coroutine;
 
     private void Awake()
     {
         _health = GetComponent<Health>();
         _sliderDisplay.maxValue = _health.MaxHealth;
+        _sliderDisplay.value = _health.CurrentHealth;
         _fixedRotation = _sliderDisplay.transform.rotation;
     }
 
-    private void Update()
+    public void DisplayChangedHealth()
     {
-        SliderDisplaySmoothly();
+        _coroutine = StartCoroutine(Display());
     }
 
-    private void LateUpdate()
+    public void LockRotation()
     {
         _sliderDisplay.transform.rotation = _fixedRotation;
     }
 
-    private void SliderDisplaySmoothly()
+    private IEnumerator Display()
     {
-        _sliderDisplay.value = Mathf.MoveTowards(_sliderDisplay.value, _health.CurrentHealth, 0.05f);
+        WaitForEndOfFrame wait = new();
+
+        while (_sliderDisplay.value != _health.CurrentHealth)
+        {
+            _sliderDisplay.value = Mathf.MoveTowards(_sliderDisplay.value, _health.CurrentHealth, _delta);
+
+            yield return wait;
+        }
     }
 }

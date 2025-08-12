@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 [RequireComponent(typeof(PlayerAnimations))]
 public class PlayerHealth : Health
@@ -20,6 +21,8 @@ public class PlayerHealth : Health
         {
             _currentHealth = _minHealth;
         }
+
+        HealthChanged?.Invoke();
     }
 
     public void TakeCherry(Cherry cherry)
@@ -38,5 +41,7 @@ public class PlayerHealth : Health
         {
             _currentHealth = _maxHealth;
         }
+
+        HealthChanged?.Invoke();
     }
 }
