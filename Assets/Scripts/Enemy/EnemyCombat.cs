@@ -2,28 +2,28 @@
 
 public class EnemyCombat : MonoBehaviour
 {
-    public void TryAttackPlayer(Transform player)
+    [SerializeField] protected int _damage = 40;
+    [SerializeField] protected float _xForce = 20;
+    [SerializeField] protected float _yForce = 20;
+
+    public virtual void TryAttackPlayer(Transform player)
     {
         Rigidbody2D playerRigidbody = player.GetComponent<Rigidbody2D>();
         PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
         Vector2 force;
-        float xForce = 20;
-        float yForce = 20;
-        float minVelocity = -0.01f;
-        int damage = 40;
 
-        if (playerRigidbody.velocity.y >= minVelocity)
+        if (player.position.x < transform.position.x)
         {
-            playerHealth.TakeDamage(damage);
-
-            if (player.position.x < transform.position.x)
-            {
-                xForce = -xForce;
-            }
-
-            force = new(xForce, yForce);
-
-            playerRigidbody.AddForce(force, ForceMode2D.Impulse);
+            _xForce = -_xForce;
         }
+
+        if (player.position.y < transform.position.y)
+        {
+            _yForce = -_yForce;
+        }
+
+        force = new(_xForce, _yForce);
+        playerRigidbody.AddForce(force, ForceMode2D.Impulse);
+        playerHealth.TakeDamage(_damage);
     }
 }

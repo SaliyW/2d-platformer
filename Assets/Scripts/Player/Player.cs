@@ -1,5 +1,8 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(CapsuleCollider2D))]
+[RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(PlayerInputReader))]
 [RequireComponent(typeof(PlayerSurfaceChecker))]
 [RequireComponent(typeof(PlayerMover))]
@@ -8,16 +11,19 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerCollisionDetector))]
 [RequireComponent(typeof(PlayerCombat))]
 [RequireComponent(typeof(PlayerHealth))]
-[RequireComponent(typeof(HealthBarSmoothSlider))]
 [RequireComponent(typeof(PlayerBag))]
+[RequireComponent(typeof(PlayerVampirism))]
 public class Player : MonoBehaviour
 {
+    [SerializeField] private BarSlider _healthBar;
+    [SerializeField] private BarSlider _vampirismBar;
+    
     private PlayerMover _mover;
     private PlayerJumper _jumper;
     private PlayerCombat _combat;
     private PlayerCollisionDetector _collisionDetector;
     private PlayerHealth _health;
-    private HealthBarSmoothSlider _healthBarSmoothSlider;
+    private PlayerVampirism _vampirism;
 
     private void Awake()
     {
@@ -26,29 +32,32 @@ public class Player : MonoBehaviour
         _combat = GetComponent<PlayerCombat>();
         _collisionDetector = GetComponent<PlayerCollisionDetector>();
         _health = GetComponent<PlayerHealth>();
-        _healthBarSmoothSlider = GetComponent<HealthBarSmoothSlider>();
+        _vampirism = GetComponent<PlayerVampirism>();
     }
 
     private void Update()
     {
         _mover.TryMove();
         _jumper.TryJump();
+        _vampirism.TryVampirism();
     }
 
     private void LateUpdate()
     {
-        _healthBarSmoothSlider.LockRotation();
+        _healthBar.LockRotation();
     }
 
     private void OnEnable()
     {
         _collisionDetector.EnemyCollisionEntered += _combat.TryAttackEnemy;
-        _health.HealthChanged += _healthBarSmoothSlider.DisplayChangedHealth;
+        _health.CurrentValueChanged += _healthBar.DisplayChangedValue;
+        _vampirism.CurrentValueChanged += _vampirismBar.DisplayChangedValue;
     }
 
     private void OnDisable()
     {
         _collisionDetector.EnemyCollisionEntered -= _combat.TryAttackEnemy;
-        _health.HealthChanged -= _healthBarSmoothSlider.DisplayChangedHealth;
+        _health.CurrentValueChanged -= _healthBar.DisplayChangedValue;
+        _vampirism.CurrentValueChanged -= _vampirismBar.DisplayChangedValue;
     }
 }

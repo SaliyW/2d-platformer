@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(PlayerAnimations))]
 public class PlayerHealth : Health
@@ -9,6 +8,12 @@ public class PlayerHealth : Health
     private void Awake()
     {
         _animations = GetComponent<PlayerAnimations>();
+    }
+
+    private void Start()
+    {
+        _barSlider.Slider.maxValue = MaxHealth;
+        _barSlider.Slider.value = CurrentHealth;
     }
 
     public void TakeDamage(int damage)
@@ -22,7 +27,7 @@ public class PlayerHealth : Health
             _currentHealth = _minHealth;
         }
 
-        HealthChanged?.Invoke();
+        CurrentValueChanged?.Invoke(_currentHealth);
     }
 
     public void TakeCherry(Cherry cherry)
@@ -42,6 +47,6 @@ public class PlayerHealth : Health
             _currentHealth = _maxHealth;
         }
 
-        HealthChanged?.Invoke();
+        CurrentValueChanged?.Invoke(_currentHealth);
     }
 }

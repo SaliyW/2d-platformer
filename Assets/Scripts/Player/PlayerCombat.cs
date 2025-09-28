@@ -4,10 +4,12 @@
 public class PlayerCombat : MonoBehaviour
 {
     private Rigidbody2D _rigidbody;
+    private PlayerVampirism _playerVampirism;    
 
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
+        _playerVampirism = GetComponent<PlayerVampirism>();
     }
 
     public void TryAttackEnemy(GameObject enemy)
@@ -19,4 +21,6 @@ public class PlayerCombat : MonoBehaviour
             Destroy(enemy);
         }
     }
+
+    
 }

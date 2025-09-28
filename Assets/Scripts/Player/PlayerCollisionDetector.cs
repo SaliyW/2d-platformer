@@ -23,7 +23,7 @@ public class PlayerCollisionDetector : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.GetComponent<Enemy>())
+        if (collision.gameObject.GetComponent<EnemySlime>())
         {
             EnemyCollisionEntered?.Invoke(collision.gameObject);
         }

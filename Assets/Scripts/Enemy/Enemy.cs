@@ -1,46 +1,34 @@
 ﻿using UnityEngine;
 
-[RequireComponent(typeof(EnemyPatrol))]
-[RequireComponent(typeof(EnemyDeadEndChecker))]
-[RequireComponent(typeof(EnemyChaser))]
-[RequireComponent(typeof(EnemyCombat))]
-[RequireComponent(typeof(EnemyPlayerDetector))]
+[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(PolygonCollider2D))]
 [RequireComponent(typeof(EnemyHealth))]
+[RequireComponent(typeof(EnemyCollisionDetector))]
+[RequireComponent(typeof(EnemyCombat))]
 public class Enemy : MonoBehaviour
 {
-    private EnemyPatrol _patrol;
-    private EnemyChaser _chaser;
-    private EnemyCombat _combat;
-    private EnemyPlayerDetector _playerDetector;
+    [SerializeField] protected BarSlider _healthBar;
 
-    private void Awake()
+    protected EnemyHealth _health;
+    protected EnemyCollisionDetector _collisionDetector;
+    protected EnemyCombat _combat;
+
+    protected virtual void Awake()
     {
-        _patrol = GetComponent<EnemyPatrol>();
-        _chaser = GetComponent<EnemyChaser>();
+        _health = GetComponent<EnemyHealth>();
+        _collisionDetector = GetComponent<EnemyCollisionDetector>();
         _combat = GetComponent<EnemyCombat>();
-        _playerDetector = GetComponent<EnemyPlayerDetector>();
     }
 
-    private void Start()
+    protected virtual void OnEnable()
     {
-        _patrol.StartPatrol();
+        _health.CurrentValueChanged += _healthBar.DisplayChangedValue;
+        _collisionDetector.PlayerCollisionEntered += _combat.TryAttackPlayer;
     }
 
-    private void OnEnable()
+    protected virtual void OnDisable()
     {
-        _chaser.StartChasing += _patrol.StopPatrol;
-        _chaser.StopChasing += _patrol.StartPatrol;
-        _playerDetector.PlayerTriggerEntered += _chaser.StartChase;
-        _playerDetector.PlayerTriggerExited += _chaser.StopChase;
-        _playerDetector.PlayerCollisionEntered += _combat.TryAttackPlayer;
-    }
-
-    private void OnDisable()
-    {
-        _chaser.StartChasing -= _patrol.StopPatrol;
-        _chaser.StopChasing -= _patrol.StartPatrol;
-        _playerDetector.PlayerTriggerEntered -= _chaser.StartChase;
-        _playerDetector.PlayerTriggerExited -= _chaser.StopChase;
-        _playerDetector.PlayerCollisionEntered -= _combat.TryAttackPlayer;
+        _health.CurrentValueChanged -= _healthBar.DisplayChangedValue;
+        _collisionDetector.PlayerCollisionEntered -= _combat.TryAttackPlayer;
     }
 }
