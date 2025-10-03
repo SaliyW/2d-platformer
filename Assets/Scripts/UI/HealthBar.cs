@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BarSlider : MonoBehaviour
+public class HealthBar : MonoBehaviour
 {
     [SerializeField] private float _delta = 0.2f;
 
@@ -25,7 +25,6 @@ public class BarSlider : MonoBehaviour
 
     public void DisplayChangedValue(float target)
     {
-
         _coroutine = StartCoroutine(Display(target));
     }
 

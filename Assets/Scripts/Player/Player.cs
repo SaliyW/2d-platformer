@@ -15,8 +15,8 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerVampirism))]
 public class Player : MonoBehaviour
 {
-    [SerializeField] private BarSlider _healthBar;
-    [SerializeField] private BarSlider _vampirismBar;
+    [SerializeField] private HealthBar _healthBar;
+    [SerializeField] private VampirismBar _vampirismBar;
     
     private PlayerMover _mover;
     private PlayerJumper _jumper;
@@ -24,6 +24,7 @@ public class Player : MonoBehaviour
     private PlayerCollisionDetector _collisionDetector;
     private PlayerHealth _health;
     private PlayerVampirism _vampirism;
+    private VampirismTargetFinder _vampirismFinder;
 
     private void Awake()
     {
@@ -33,6 +34,7 @@ public class Player : MonoBehaviour
         _collisionDetector = GetComponent<PlayerCollisionDetector>();
         _health = GetComponent<PlayerHealth>();
         _vampirism = GetComponent<PlayerVampirism>();
+        _vampirismFinder = GetComponentInChildren<VampirismTargetFinder>();
     }
 
     private void Update()
@@ -52,6 +54,7 @@ public class Player : MonoBehaviour
         _collisionDetector.EnemyCollisionEntered += _combat.TryAttackEnemy;
         _health.CurrentValueChanged += _healthBar.DisplayChangedValue;
         _vampirism.CurrentValueChanged += _vampirismBar.DisplayChangedValue;
+        _vampirism.VampirismActivityChanged += _vampirismFinder.ChangeActivity;
     }
 
     private void OnDisable()
@@ -59,5 +62,6 @@ public class Player : MonoBehaviour
         _collisionDetector.EnemyCollisionEntered -= _combat.TryAttackEnemy;
         _health.CurrentValueChanged -= _healthBar.DisplayChangedValue;
         _vampirism.CurrentValueChanged -= _vampirismBar.DisplayChangedValue;
+        _vampirism.VampirismActivityChanged -= _vampirismFinder.ChangeActivity;
     }
 }

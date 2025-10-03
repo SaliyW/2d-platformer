@@ -749,7 +749,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4717375416274587644, guid: 69cde1c35ce7c174eb83b519a4443f07, type: 3}
       propertyPath: m_Name
-      value: Circle of Vampirism
+      value: Vampirism Target Finder
       objectReference: {fileID: 0}
     - target: {fileID: 4717375416274587644, guid: 69cde1c35ce7c174eb83b519a4443f07, type: 3}
       propertyPath: m_IsActive
@@ -795,13 +795,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: -4342900556241947830, guid: 69cde1c35ce7c174eb83b519a4443f07, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4717375416274587644, guid: 69cde1c35ce7c174eb83b519a4443f07, type: 3}
-      insertIndex: 3
+      insertIndex: -1
       addedObject: {fileID: 1589007547}
+    - targetCorrespondingSourceObject: {fileID: 4717375416274587644, guid: 69cde1c35ce7c174eb83b519a4443f07, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1589007550}
   m_SourcePrefab: {fileID: 100100000, guid: 69cde1c35ce7c174eb83b519a4443f07, type: 3}
 --- !u!1 &511123768
 GameObject:
@@ -1336,7 +1340,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c09aa4c6183169a448e5f646b48a6223, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _healthBar: {fileID: 357104418308241692}
+  _healthBar: {fileID: 357104418308241695}
   _vampirismBar: {fileID: 1797022680}
 --- !u!114 &789028105
 MonoBehaviour:
@@ -1402,7 +1406,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _currentHealth: 20
   _maxHealth: 100
-  _barSlider: {fileID: 357104418308241692}
+  _barSlider: {fileID: 357104418308241695}
 --- !u!114 &789028110
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1435,7 +1439,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _barSlider: {fileID: 1797022680}
-  _circleOfVampirism: {fileID: 1495483755}
+  _targetFinder: {fileID: 1589007550}
   _damage: 5
   _currentActionTime: 0
   _currentRechargeTime: 0
@@ -23765,6 +23769,11 @@ TilemapCollider2D:
   m_MaximumTileChangeCount: 1000
   m_ExtrusionFactor: 0
   m_UseDelaunayMesh: 0
+--- !u!1 &1435629424 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6597725859036398250, guid: f47c3d40e04f87a4a9d5570d5e8f0681, type: 3}
+  m_PrefabInstance: {fileID: 1208514388436886518}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1457898325
 GameObject:
   m_ObjectHideFlags: 0
@@ -23976,17 +23985,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1324486502}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1495483755 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: -4342900556241947830, guid: 69cde1c35ce7c174eb83b519a4443f07, type: 3}
-  m_PrefabInstance: {fileID: 506823888}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1589007544}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43f8d0b655bc49048a61d53da3e8e5f2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1495483758 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7469230415685826976, guid: 69cde1c35ce7c174eb83b519a4443f07, type: 3}
@@ -24725,6 +24723,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &1589007550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1589007544}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c0aba6599bce6b45a4e5498e98f87ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1773113998
 GameObject:
   m_ObjectHideFlags: 0
@@ -24856,9 +24866,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1797022677}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 919b0075bb71a9e43ab94c11540c350c, type: 3}
+  m_Script: {fileID: 11500000, guid: ea2e00f64b90fa64fa46a436e8188ed8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _vampirism: {fileID: 789028112}
   _delta: 0.0045
 --- !u!1 &1848755238
 GameObject:
@@ -25047,17 +25058,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2006838234}
   m_CullTransparentMesh: 1
---- !u!114 &357104418308241692 stripped
+--- !u!114 &357104418308241695
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6902416261182968352, guid: f47c3d40e04f87a4a9d5570d5e8f0681, type: 3}
-  m_PrefabInstance: {fileID: 1208514388436886518}
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1435629424}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 919b0075bb71a9e43ab94c11540c350c, type: 3}
+  m_Script: {fileID: 11500000, guid: 9422e63a03fc9664ead64b843f0a7d5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _delta: 0.2
 --- !u!1001 &1208514388436886518
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25208,10 +25221,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6391100898412142956, guid: f47c3d40e04f87a4a9d5570d5e8f0681, type: 3}
+    - {fileID: 6902416261182968352, guid: f47c3d40e04f87a4a9d5570d5e8f0681, type: 3}
     m_RemovedGameObjects:
     - {fileID: 8222358155840716247, guid: f47c3d40e04f87a4a9d5570d5e8f0681, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6597725859036398250, guid: f47c3d40e04f87a4a9d5570d5e8f0681, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 357104418308241695}
   m_SourcePrefab: {fileID: 100100000, guid: f47c3d40e04f87a4a9d5570d5e8f0681, type: 3}
 --- !u!224 &5217497419902189643 stripped
 RectTransform:

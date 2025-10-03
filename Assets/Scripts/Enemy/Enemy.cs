@@ -7,7 +7,7 @@
 [RequireComponent(typeof(EnemyCombat))]
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] protected BarSlider _healthBar;
+    [SerializeField] protected HealthBar _healthBar;
 
     protected EnemyHealth _health;
     protected EnemyCollisionDetector _collisionDetector;

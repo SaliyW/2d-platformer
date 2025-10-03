@@ -6,13 +6,14 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerHealth))]
 public class PlayerVampirism : MonoBehaviour
 {
-    [SerializeField] private BarSlider _barSlider;
-    [SerializeField] private CircleOfVampirism _circleOfVampirism;
+    [SerializeField] private VampirismBar _barSlider;
+    [SerializeField] private VampirismTargetFinder _targetFinder;
     [SerializeField] private int _damage = 2;
     [SerializeField] private float _currentActionTime;
     [SerializeField] private float _currentRechargeTime;
 
     public Action<float> CurrentValueChanged;
+    public Action VampirismActivityChanged;
     private PlayerInputReader _inputReader;
     private PlayerHealth _health;
     private readonly float _maxActionTime = 6;
@@ -24,20 +25,14 @@ public class PlayerVampirism : MonoBehaviour
     public float CurrentRechargeTime => _currentRechargeTime;
     public float MaxActionTime => _maxActionTime;
     public float MaxRechargeTime => _maxRechargeTime;
+    public float MinCountValue => _minCountValue;
 
     private void Awake()
     {
         _inputReader = GetComponent<PlayerInputReader>();
         _health = GetComponent<PlayerHealth>();
-        _circleOfVampirism.gameObject.SetActive(false);
         _currentActionTime = _maxActionTime;
         _currentRechargeTime = _maxRechargeTime;
-    }
-
-    private void Start()
-    {
-        _barSlider.Slider.maxValue = MaxActionTime;
-        _barSlider.Slider.value = CurrentActionTime;
     }
 
     public void TryVampirism()
@@ -53,14 +48,13 @@ public class PlayerVampirism : MonoBehaviour
         WaitForSecondsRealtime wait = new(1);
         EnemyHealth enemyHealth = null;
 
-        _barSlider.Slider.maxValue = _currentActionTime;
-        _circleOfVampirism.gameObject.SetActive(true);
+        VampirismActivityChanged?.Invoke();
 
         while (_currentActionTime != _minCountValue)
         {
-            if (_circleOfVampirism.GiveTarget() != null)
+            if (_targetFinder.GiveTarget() != null)
             {
-                enemyHealth = _circleOfVampirism.GiveTarget().GetComponent<EnemyHealth>();
+                enemyHealth = _targetFinder.GiveTarget().GetComponent<EnemyHealth>();
                 enemyHealth.TakeDamage(_damage);
                 _health.TakeHeal(_damage);
             }
@@ -72,7 +66,6 @@ public class PlayerVampirism : MonoBehaviour
         }
 
         _currentRechargeTime = _minCountValue;
-        _barSlider.Slider.maxValue = MaxRechargeTime;
         CurrentValueChanged?.Invoke(_currentRechargeTime);
         _coroutine = StartCoroutine(CountRecharge());
     }
@@ -81,7 +74,7 @@ public class PlayerVampirism : MonoBehaviour
     {
         WaitForSecondsRealtime wait = new(1);
 
-        _circleOfVampirism.gameObject.SetActive(false);
+        VampirismActivityChanged?.Invoke();
 
         while (_currentRechargeTime != _maxRechargeTime)
         {
@@ -92,7 +85,5 @@ public class PlayerVampirism : MonoBehaviour
         }
 
         _currentActionTime = _maxActionTime;
-        _barSlider.Slider.maxValue = _currentActionTime;
-        _barSlider.Slider.value = _barSlider.Slider.maxValue;
     }
 }

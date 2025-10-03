@@ -3,11 +3,24 @@ using UnityEngine;
 
 [RequireComponent(typeof(CircleCollider2D))]
 [RequireComponent(typeof(Rigidbody2D))]
-public class CircleOfVampirism : MonoBehaviour
+public class VampirismTargetFinder : MonoBehaviour
 {
-    private List<GameObject> _objectsInTrigger = new();
+    private List<Enemy> _objectsInTrigger = new();
+    private bool _isVampirismActive = false;
 
-    public GameObject GiveTarget()
+    private void Start()
+    {
+        gameObject.SetActive(_isVampirismActive);
+    }
+
+    public void ChangeActivity()
+    {
+        _isVampirismActive = !_isVampirismActive;
+
+        gameObject.SetActive(_isVampirismActive);
+    }
+
+    public Enemy GiveTarget()
     {
         int oneObject = 1;
 
@@ -27,27 +40,29 @@ public class CircleOfVampirism : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.GetComponent<Enemy>())
+        if (collision.gameObject.TryGetComponent(out Enemy enemy))
         {
-            _objectsInTrigger.Add(collision.gameObject);
+            _objectsInTrigger.Add(enemy);
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (_objectsInTrigger.Contains(collision.gameObject))
+        collision.gameObject.TryGetComponent(out Enemy enemy);
+
+        if (_objectsInTrigger.Contains(enemy))
         {
-            _objectsInTrigger.Remove(collision.gameObject);
+            _objectsInTrigger.Remove(enemy);
         }
     }
 
-    private GameObject FindNearest()
+    private Enemy FindNearest()
     {
-        GameObject nearest = null;
+        Enemy nearest = null;
         float distance;
         float minDistance = float.MaxValue;
 
-        foreach (GameObject obj in _objectsInTrigger)
+        foreach (Enemy obj in _objectsInTrigger)
         {
             distance = Vector3.Distance(transform.position, obj.transform.position);
 

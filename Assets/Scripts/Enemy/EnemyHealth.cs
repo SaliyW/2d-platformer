@@ -10,9 +10,9 @@
     {
         _currentHealth -= damage;
 
-        if (_currentHealth < _minHealth)
+        if (_currentHealth < MinHealth)
         {
-            _currentHealth = _minHealth;
+            _currentHealth = MinHealth;
         }
 
         CurrentValueChanged?.Invoke(_currentHealth);
