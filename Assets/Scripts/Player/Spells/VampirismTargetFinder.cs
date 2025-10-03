@@ -38,6 +38,27 @@ public class VampirismTargetFinder : MonoBehaviour
         }
     }
 
+    public bool TryGiveTarget(out Enemy enemy)
+    {
+        int oneObject = 1;
+
+        if (_objectsInTrigger.Count > oneObject)
+        {
+            enemy = FindNearest();
+        }
+        else if (_objectsInTrigger.Count == oneObject)
+        {
+            enemy = _objectsInTrigger[0];
+        }
+        else
+        {
+            enemy = null;
+            return false;
+        }
+
+        return true;
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.TryGetComponent(out Enemy enemy))
